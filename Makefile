@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: all verify lint package clean help
+.PHONY: all verify lint package updates clean help
 
 # Configuration
 DIST       := dist
@@ -26,12 +26,13 @@ all: verify package
 help:
 	@echo -e "${BOLD}Usage: make [target]${NC}"
 	@echo ""
-	@echo "  make          Verify and package the extension"
-	@echo "  make verify   Run all verification checks"
-	@echo "  make lint     Lint manifest.json"
-	@echo "  make package  Create .xpi file (runs verify first)"
-	@echo "  make clean    Remove dist/ directory"
-	@echo "  make help     Show this help"
+	@echo "  make             Verify and package the extension"
+	@echo "  make verify      Run all verification checks"
+	@echo "  make lint        Lint manifest.json"
+	@echo "  make package     Create .xpi file (runs verify first)"
+	@echo "  make updates     Generate dist/updates.json"
+	@echo "  make clean       Remove dist/ directory"
+	@echo "  make help        Show this help"
 
 verify: lint
 	@echo ""
@@ -55,6 +56,9 @@ package: verify
 	echo -e "${GREEN}[OK]${NC} Created: $(XPI) ($$SIZE bytes)"; \
 	echo -e "${CYAN}[OK]${NC} SHA256: $$HASH"; \
 	echo -e "${CYAN}[OK]${NC} Hash file: $(SHA)"
+
+updates:
+	@bash scripts/gen-updates.sh
 
 clean:
 	@rm -rf $(DIST)

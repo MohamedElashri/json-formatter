@@ -3,7 +3,7 @@
   "name": "JSON Formatter",
   "version": "1.0.0",
   "description": "A JSON viewer with syntax highlighting, collapsible tree view, path tracking, and theme support.",
-  "homepage_url": "https://github.com/melashri/json-formatter",
+  "homepage_url": "https://github.com/MohamedElashri/json-formatter",
   "author": "melashri",
   "icons": {
     "48": "icons/icon-48.png",
@@ -39,7 +39,8 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "json-formatter@melashri.dev",
-      "strict_min_version": "109.0"
+      "strict_min_version": "109.0",
+      "update_url": "https://github.com/MohamedElashri/json-formatter/releases/latest/download/updates.json"
     },
     "gecko_android": {
       "strict_min_version": "113.0"
