@@ -63,11 +63,3 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
-
-      - name: Commit updates.json to main branch
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "ci: update updates.json for v${{ steps.version.outputs.VERSION }}"
-          file_pattern: dist/updates.json
-          branch: main
-          create_branch: false
