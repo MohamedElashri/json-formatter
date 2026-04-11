@@ -1,1 +1,4 @@
 /.qwen
+dist
+*.log
+*.tmp

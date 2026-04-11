@@ -51,7 +51,7 @@
     // Expose data to console
     window.jsonData = data;
     window.data = data;
-    console.log('%c✓ JSON Formatter', 'font-weight:bold;color:#4CAF50;', 'Data available as window.data');
+    console.log('[JSON Formatter] Data available as window.data');
 
     // Clear page completely
     document.documentElement.innerHTML = '';
@@ -194,14 +194,14 @@
 
     const pathCopyBtn = document.createElement('button');
     pathCopyBtn.id = 'jf-path-copy';
-    pathCopyBtn.textContent = '📋';
+    pathCopyBtn.textContent = 'Copy';
     pathCopyBtn.title = 'Copy path';
     pathCopyBtn.addEventListener('click', () => {
       const path = pathText.textContent;
       if (path) {
         navigator.clipboard.writeText(path);
-        pathCopyBtn.textContent = '✓';
-        setTimeout(() => pathCopyBtn.textContent = '📋', 1000);
+        pathCopyBtn.textContent = 'OK';
+        setTimeout(() => pathCopyBtn.textContent = 'Copy', 1000);
       }
     });
     pathBar.appendChild(pathCopyBtn);
@@ -397,13 +397,13 @@
       if (hasNested) {
         const expandBtn = document.createElement('button');
         expandBtn.className = 'jf-copy-node';
-        expandBtn.textContent = '⧉';
+        expandBtn.textContent = '{}';
         expandBtn.title = 'Copy this node as JSON';
         actions.appendChild(expandBtn);
 
         const toggleChildrenBtn = document.createElement('button');
         toggleChildrenBtn.className = 'jf-expand-children';
-        toggleChildrenBtn.textContent = '⇕';
+        toggleChildrenBtn.textContent = '[+]';
         toggleChildrenBtn.title = 'Expand/collapse all children';
         actions.appendChild(toggleChildrenBtn);
       }
@@ -548,7 +548,7 @@
 
     navigator.clipboard.writeText(JSON.stringify(value, null, 2));
     const original = btn.textContent;
-    btn.textContent = '✓';
+    btn.textContent = 'OK';
     setTimeout(() => btn.textContent = original, 1000);
   }
 

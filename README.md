@@ -66,7 +66,7 @@ Once installed, the extension automatically activates when we visit:
 - **Expand/Collapse** - Click the ▶/▼ toggle next to objects/arrays
 - **View Path** - Hover over any key to see its full JSON path
 - **Pin Path** - Click on a key to pin the path display
-- **Copy Path** - Click the 📋 icon that appears when hovering over keys
+- **Copy Path** - Click the Copy icon that appears when hovering over keys
 - **Expand All Children** - Hover over an object/array and click the ⊞ button
 
 ### Console Access
