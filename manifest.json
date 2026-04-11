@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "JSON Formatter",
+  "version": "1.0.0",
+  "description": "A JSON viewer with syntax highlighting, collapsible tree view, path tracking, and theme support.",
+  "homepage_url": "https://github.com/melashri/json-formatter",
+  "author": "melashri",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "JSON Formatter"
+  },
+  "permissions": [],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["styles.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "json-formatter@melashri.dev",
+      "strict_min_version": "109.0"
+    },
+    "gecko_android": {
+      "strict_min_version": "113.0"
+    }
+  }
+}

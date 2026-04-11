@@ -1,0 +1,452 @@
+/* styles.css - JSON Formatter */
+
+/* Reset */
+body:has(#jf-root) { margin: 0; padding: 0; }
+html:has(#jf-root) { background: var(--bg, #1e1e2e); }
+
+/* ── Theme: Dark (default) ───────────────────────────────────── */
+#jf-root {
+  --bg: #1e1e2e;
+  --bg-toolbar: #181825;
+  --bg-hover: #313244;
+  --bg-tooltip: #313244;
+  --text: #cdd6f4;
+  --text-muted: #6c7086;
+  --border: #45475a;
+  --accent: #89b4fa;
+  --key: #89b4fa;
+  --string: #a6e3a1;
+  --number: #fab387;
+  --bool: #cba6f7;
+  --link: #a6e3a1;
+  --null: #6c7086;
+  --bracket: #585b70;
+  --punctuation: #585b70;
+  --guide: #313244;
+  --guide-current: rgba(250, 204, 21, 0.35);
+  --guide-ancestor: rgba(250, 204, 21, 0.12);
+  --btn-bg: transparent;
+  --btn-hover: #45475a;
+  --btn-active: #585b70;
+}
+
+/* ── Theme: Light ────────────────────────────────────────────── */
+#jf-root[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-toolbar: #f5f5f5;
+  --bg-hover: #e8e8e8;
+  --bg-tooltip: #333333;
+  --text: #212121;
+  --text-muted: #9e9e9e;
+  --border: #e0e0e0;
+  --accent: #1565c0;
+  --key: #1565c0;
+  --string: #2e7d32;
+  --number: #e65100;
+  --bool: #7b1fa2;
+  --link: #2e7d32;
+  --null: #9e9e9e;
+  --bracket: #757575;
+  --punctuation: #757575;
+  --guide: #e0e0e0;
+  --guide-current: rgba(202, 138, 4, 0.35);
+  --guide-ancestor: rgba(202, 138, 4, 0.12);
+  --btn-bg: transparent;
+  --btn-hover: #e0e0e0;
+  --btn-active: #bdbdbd;
+}
+
+/* ── Theme: Auto (follow system) ─────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  #jf-root[data-theme="auto"] {
+    --bg: #ffffff;
+    --bg-toolbar: #f5f5f5;
+    --bg-hover: #e8e8e8;
+    --bg-tooltip: #333333;
+    --text: #212121;
+    --text-muted: #9e9e9e;
+    --border: #e0e0e0;
+    --accent: #1565c0;
+    --key: #1565c0;
+    --string: #2e7d32;
+    --number: #e65100;
+    --bool: #7b1fa2;
+    --link: #2e7d32;
+    --null: #9e9e9e;
+    --bracket: #757575;
+    --punctuation: #757575;
+    --guide: #e0e0e0;
+    --guide-current: rgba(202, 138, 4, 0.35);
+    --guide-ancestor: rgba(202, 138, 4, 0.12);
+    --btn-bg: transparent;
+    --btn-hover: #e0e0e0;
+    --btn-active: #bdbdbd;
+  }
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
+#jf-root {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────── */
+#jf-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--bg-toolbar);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+#jf-info {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-right: auto;
+}
+
+#jf-levels {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+#jf-levels > span {
+  font-size: 12px;
+  margin-right: 4px;
+  color: var(--text-muted);
+}
+
+#jf-view-picker {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.jf-view-btn {
+  border: none;
+  border-radius: 0;
+  border-right: 1px solid var(--border);
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  background: var(--btn-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.jf-view-btn:last-child {
+  border-right: none;
+}
+
+.jf-view-btn:hover {
+  background: var(--btn-hover);
+}
+
+.jf-view-btn.jf-active {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+#jf-actions {
+  display: flex;
+  gap: 4px;
+}
+
+#jf-toolbar button {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--btn-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#jf-toolbar button:hover {
+  background: var(--btn-hover);
+}
+
+#jf-toolbar button.jf-active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+/* ── Content Area ────────────────────────────────────────────── */
+#jf-content {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.jf-panel {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  display: none;
+}
+
+.jf-panel.jf-active {
+  display: block;
+}
+
+#jf-formatted.jf-active,
+#jf-raw.jf-active {
+  display: block;
+  padding: 16px;
+  background: var(--bg);
+}
+
+#jf-formatted.jf-hidden,
+#jf-raw.jf-hidden,
+#jf-tree.jf-hidden {
+  display: none !important;
+}
+
+/* ── Tree View ───────────────────────────────────────────────── */
+.jf-line {
+  position: relative;
+  border-radius: 2px;
+  transition: background 0.1s;
+}
+
+.jf-line:hover {
+  background: var(--bg-hover);
+}
+
+.jf-line.jf-current > .jf-children {
+  border-left-color: var(--guide-current) !important;
+}
+
+.jf-line.jf-ancestor > .jf-children {
+  border-left-color: var(--guide-ancestor) !important;
+}
+
+/* Toggle */
+.jf-toggle {
+  display: inline-block;
+  width: 16px;
+  font-size: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s;
+  transform: rotate(90deg);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.jf-line.jf-collapsed > .jf-toggle {
+  transform: rotate(0);
+}
+
+.jf-spacer {
+  display: inline-block;
+  width: 16px;
+  flex-shrink: 0;
+}
+
+/* Children with indent guides */
+.jf-children {
+  border-left: 1px solid var(--guide);
+  margin-left: 8px;
+  padding-left: 4px;
+}
+
+.jf-children.jf-collapsed {
+  display: none;
+}
+
+.jf-line.jf-collapsed > .jf-close-bracket {
+  display: none;
+}
+
+/* Count & Preview */
+.jf-count {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 12px;
+}
+
+.jf-preview {
+  display: none;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 12px;
+}
+
+.jf-line.jf-collapsed > .jf-preview {
+  display: inline;
+}
+
+.jf-line.jf-collapsed > .jf-count {
+  display: inline;
+}
+
+/* Inline actions */
+.jf-inline-actions {
+  display: none;
+  margin-left: 8px;
+  gap: 2px;
+  vertical-align: middle;
+}
+
+.jf-line:hover > .jf-inline-actions {
+  display: inline-flex;
+}
+
+.jf-inline-actions button {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1.6;
+  white-space: nowrap;
+  transition: background 0.1s, color 0.1s;
+}
+
+.jf-inline-actions button:hover {
+  background: var(--btn-hover);
+  color: var(--text);
+}
+
+/* ── Syntax Highlighting ─────────────────────────────────────── */
+.jf-key {
+  color: var(--key);
+}
+
+.jf-string {
+  color: var(--string);
+  text-wrap: auto;
+}
+
+.jf-string .jf-link {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.jf-string .jf-link:hover {
+  text-decoration: underline;
+}
+
+.jf-number {
+  color: var(--number);
+}
+
+.jf-bool {
+  color: var(--bool);
+}
+
+.jf-null {
+  color: var(--null);
+  font-style: italic;
+}
+
+.jf-header {
+  color: var(--bracket);
+}
+
+.jf-colon {
+  color: var(--punctuation);
+  margin: 0 2px;
+}
+
+.jf-comma {
+  color: var(--punctuation);
+}
+
+/* ── Path Bar ────────────────────────────────────────────────── */
+#jf-path-bar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--bg-toolbar);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#jf-path-bar.jf-visible {
+  display: flex;
+}
+
+#jf-path-bar.jf-pinned #jf-path-text {
+  color: var(--accent);
+}
+
+#jf-path-text {
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#jf-path-copy {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--btn-bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#jf-path-copy:hover {
+  background: var(--btn-hover);
+  color: var(--text);
+}
+
+/* ── Scrollbar (Firefox) ─────────────────────────────────────── */
+#jf-content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--guide) var(--bg-toolbar);
+}
+
+#jf-content:hover {
+  scrollbar-color: var(--text-muted) var(--bg-toolbar);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  #jf-toolbar {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  #jf-view-picker,
+  #jf-actions {
+    gap: 2px;
+  }
+
+  #jf-toolbar button {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+}
