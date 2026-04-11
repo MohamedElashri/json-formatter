@@ -8,20 +8,27 @@ MANIFEST="manifest.json"
 ERRORS=0
 WARNINGS=0
 
-err() { echo "   [ERROR] $1"; ERRORS=$((ERRORS + 1)); }
-warn() { echo "   [WARN] $1"; WARNINGS=$((WARNINGS + 1)); }
+# Colors
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+err() { echo -e "   ${RED}[ERROR]${NC} $1"; ERRORS=$((ERRORS + 1)); }
+warn() { echo -e "   ${YELLOW}[WARN]${NC} $1"; WARNINGS=$((WARNINGS + 1)); }
 
 # File exists
 if [[ ! -f "$MANIFEST" ]]; then
     err "manifest.json not found"
-    echo ""; echo "[FAIL] $ERRORS error(s)"
+    echo ""; echo -e "${RED}[FAIL]${NC} $ERRORS error(s)"
     exit 1
 fi
 
 # Valid JSON
 if ! python3 -c "import json; json.load(open('$MANIFEST'))" 2>/dev/null; then
     err "manifest.json is not valid JSON"
-    echo ""; echo "[FAIL] $ERRORS error(s)"
+    echo ""; echo -e "${RED}[FAIL]${NC} $ERRORS error(s)"
     exit 1
 fi
 
@@ -49,7 +56,7 @@ except Exception:
 " "$1"
 }
 
-echo "[CHECK] Linting manifest.json..."
+echo -e "${BOLD}[CHECK]${NC} Linting manifest.json..."
 
 # manifest_version
 MV=$(read_val "manifest_version")
@@ -119,12 +126,12 @@ fi
 
 # Summary
 if (( ERRORS == 0 && WARNINGS == 0 )); then
-    echo "   [OK] No issues found"
+    echo -e "   ${GREEN}[OK]${NC} No issues found"
 else
     if (( ERRORS > 0 )); then
-        echo ""; echo "[FAIL] $ERRORS error(s), $WARNINGS warning(s)"
+        echo ""; echo -e "${RED}[FAIL]${NC} $ERRORS error(s), $WARNINGS warning(s)"
         exit 1
     elif (( WARNINGS > 0 )); then
-        echo ""; echo "[WARN] $WARNINGS warning(s), 0 error(s)"
+        echo ""; echo -e "${YELLOW}[WARN]${NC} $WARNINGS warning(s), 0 error(s)"
     fi
 fi
