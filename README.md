@@ -110,7 +110,7 @@ The extension is built with vanilla JavaScript for maximum compatibility and per
 
 ## Browser Compatibility
 
-This extension is built specifically for Firefox and uses Firefox available APIs. It is ** probably not** compatible with Chrome or other browsers.
+This extension is built specifically for Firefox and uses Firefox available APIs. It is **probably not** compatible with Chrome or other browsers.
 
 ## License
 
