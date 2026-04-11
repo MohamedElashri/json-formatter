@@ -27,6 +27,9 @@
     "default_title": "JSON Formatter"
   },
   "permissions": [],
+  "data_collection_permissions": {
+    "third_party_network_use": "none"
+  },
   "host_permissions": [
     "<all_urls>"
   ],
