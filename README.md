@@ -33,6 +33,12 @@ A beautiful, feature-rich JSON viewer browser extension for Firefox with syntax 
 > **Note:** Firefox's native JSON viewer can intercept before extensions run. 
 > Disabling it is a one-time setting change that all Firefox JSON viewer extensions require.
 
+**Site access:** Firefox can leave a Manifest V3 extension without access to
+websites. When that happens JSON Formatter opens a page with an **Allow on all
+websites** button and shows a **!** badge on its toolbar button; clicking the
+toolbar button asks again. You can also allow it under **Add-ons and themes →
+JSON Formatter → Permissions**.
+
 ### Permanent Installation
 4. Select the `manifest.json` file from this directory
 5. To make it permanent, we'll need to package and sign the extension:

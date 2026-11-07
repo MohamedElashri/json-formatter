@@ -5,7 +5,7 @@
 set -euo pipefail
 
 ERRORS=0
-REQUIRED="manifest.json content-script.js styles.css README.md"
+REQUIRED="manifest.json content-script.js styles.css background.js access.html access.js README.md"
 ICONS="icons/icon-48.png icons/icon-96.png icons/icon-128.png"
 
 # Colors

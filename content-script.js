@@ -274,7 +274,7 @@
     globalTotalKeys = 0;
     container.innerHTML = '';
 
-    const rootNode = renderValue(null, data, 'data', 0, true, false);
+    const rootNode = renderValue(null, data, 'data', 0, true, true);
     container.appendChild(rootNode);
 
     return { maxDepth: globalMaxDepth, totalKeys: globalTotalKeys };
