@@ -1,7 +1,10 @@
 /.qwen
 dist
 node_modules/
+firefox_extension.zip
+source_code.zip
 __pycache__/
 *.log
 *.tmp
 PUBLISHING.md
+listing

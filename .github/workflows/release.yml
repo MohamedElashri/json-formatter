@@ -41,7 +41,7 @@ jobs:
         run: npm ci --ignore-scripts
 
       - name: Verify, package, and validate with Mozilla
-        run: make release
+        run: make test package source
 
       - name: Create draft GitHub release
         uses: softprops/action-gh-release@v2
@@ -49,6 +49,8 @@ jobs:
           name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           files: |
+            firefox_extension.zip
+            source_code.zip
             dist/*-unsigned.xpi
             dist/*-listing-kit.zip
             dist/SHA256SUMS

@@ -5,7 +5,7 @@
   "description": "Development tools for the JSON Formatter Firefox extension",
   "license": "MIT",
   "scripts": {
-    "lint": "NO_UPDATE_NOTIFIER=1 web-ext lint --source-dir dist/extension --warnings-as-errors",
+    "lint": "NO_UPDATE_NOTIFIER=1 web-ext lint --source-dir dist/firefox --warnings-as-errors",
     "screenshots": "node scripts/screenshots.mjs"
   },
   "devDependencies": {

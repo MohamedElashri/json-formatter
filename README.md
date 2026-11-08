@@ -82,14 +82,49 @@ The extension itself needs no build step. Python 3 and Node.js 22+ are used by t
 release tools.
 
 ```sh
-npm ci
-make release
+make install
+make test
+make package
 ```
 
-This verifies the manifest, stages an allowlist of runtime files, creates an
-unsigned XPI and listing kit in `dist/`, and runs Mozilla's web-ext validator.
-See [the publishing guide](PUBLISHING.md) for signing, public submission, the old
-private update channel, and the release checklist.
+The commands follow the same layout as DevTab. `make package` creates
+`firefox_extension.zip` in the project root for manual upload to Firefox Add-ons.
+The manifest is at the archive root; development dependencies are excluded.
+`make source` creates `source_code.zip` separately if Mozilla requests source
+code for review.
+
+| Task | Command | Output |
+| --- | --- | --- |
+| Stage the extension | `make build` or `make build-firefox` | `dist/firefox/` |
+| Package for Firefox | `make package` or `make package-firefox` | `firefox_extension.zip` |
+| Archive source | `make source` | `source_code.zip` |
+| Bump patch/minor/major | `make bump` / `make bump-minor` / `make bump-major` | Updates all three version files |
+| Full preparation | `make` | Clean, install dependencies, test, and package |
+
+Packaging also creates a versioned upload ZIP, an unsigned XPI, a listing kit,
+and checksums in `dist/`. `firefox_extension.zip` and the unsigned XPI contain the
+same bytes. Upload the extension ZIP to AMO; use the listing kit for store text,
+the icon, and screenshots.
+
+For a release, choose a version greater than the one already submitted to AMO:
+
+```sh
+VERSION=1.0.2 make release
+```
+
+This sets the chosen version in `manifest.json`, `package.json`, and
+`package-lock.json`, then cleans, installs dependencies, runs checks, and creates
+both root ZIPs plus the listing kit. Reusing the current local version is allowed
+for rebuilding. `make release` requires an explicit `VERSION` and does not create
+commits, tags, or submissions. Update the release notes and listing copy for each
+new version. Run `make help` for all targets.
+
+For the first public release, upload to the **listed** channel of the existing
+AMO add-on, preserving `json-formatter@melashri.dev`. Listing copy and reviewer
+instructions are in `listing/`. Existing private installations still require a
+migration feed pointing to the signed public XPI; use
+`scripts/gen-updates.sh --signed-xpi FILE --url HTTPS_URL` only after downloading
+the signed release from AMO.
 
 ```sh
 make icons                       # Regenerate PNGs; requires rsvg-convert
