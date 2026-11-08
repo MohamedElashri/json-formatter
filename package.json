@@ -1,0 +1,15 @@
+{
+  "name": "json-formatter",
+  "version": "1.0.2",
+  "private": true,
+  "description": "Development tools for the JSON Formatter Firefox extension",
+  "license": "MIT",
+  "scripts": {
+    "lint": "NO_UPDATE_NOTIFIER=1 web-ext lint --source-dir dist/extension --warnings-as-errors",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.57.0",
+    "web-ext": "10.8.0"
+  }
+}

@@ -1,0 +1,44 @@
+JSON Formatter 1.0.2 — first listed/public version of the existing unlisted add-on
+ID: json-formatter@melashri.dev
+
+This release retains the existing ID and removes gecko.update_url so AMO handles
+updates after installation. Do not treat it as a new add-on identity.
+
+Source and packaging:
+All runtime JavaScript and CSS are readable and included in the XPI. No bundler,
+transpiler, minifier, external library, remote code, background process, or network
+API is used. make release copies an allowlist of files and ZIPs them; npm
+dependencies are development-only and are not shipped.
+
+Permissions and privacy:
+The content script matches all URLs so it can detect JSON at arbitrary endpoints.
+It only builds the viewer for valid JSON objects/arrays on JSON content-type
+documents or pages containing a single PRE element. Other pages are left intact.
+The only persisted preference is jf-theme in the current site's localStorage.
+The extension does not collect/transmit data. Copy buttons write to the clipboard
+on a user gesture; they do not read it. HTTP/HTTPS JSON links open only on click.
+
+Desktop testing (Firefox 140+):
+1. In about:config set devtools.jsonview.enabled to false, then reload the JSON
+   tab. Firefox's built-in JSON viewer can otherwise take precedence. This is a
+   manual user setting; the extension never edits Firefox preferences.
+2. Allow website access when prompted.
+3. For a local test, from the source checkout run:
+     python3 -m http.server 8765 --bind 127.0.0.1
+   Visit http://127.0.0.1:8765/listing/sample.json
+   Alternatively serve any JSON object/array from an HTTPS endpoint.
+4. Confirm the syntax-highlighted tree appears. Collapse an object using its
+   triangle, then try the level buttons and All.
+5. Hover a row to see its data.* path; click to pin, then Escape to clear it.
+6. Try Tree, Formatted, and Raw. Cycle Auto / Dark / Light using the theme button.
+7. Test Copy and path/node copy on an HTTPS document (clipboard availability can
+   be restricted on HTTP pages). Theme preferences are per-origin.
+8. Ordinary HTML, invalid JSON, and primitive JSON values should remain unchanged.
+
+Console exposure via window.data / window.jsonData is best effort; a page's CSP
+can block the inline initialization script. The viewer still functions.
+
+Minimum declared versions: desktop 140, Android 142. Desktop screenshots and
+automated checks are captured on Firefox 144.0.2. Android needs separate device
+verification before publication for that platform. No login or test account
+is required.

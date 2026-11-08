@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>JSON Formatter</title>
+  <defs>
+    <linearGradient id="background" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#176747"/>
+      <stop offset="1" stop-color="#103c32"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#background)"/>
+  <rect x="4.75" y="4.75" width="118.5" height="118.5" rx="27.25" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="1.5"/>
+  <g fill="none" stroke="#f0fff7" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 32h-5c-7 0-9 5-9 12v8c0 7-3 12-10 12 7 0 10 5 10 12v8c0 7 2 12 9 12h5"/>
+    <path d="M82 32h5c7 0 9 5 9 12v8c0 7 3 12 10 12-7 0-10 5-10 12v8c0 7-2 12-9 12h-5"/>
+  </g>
+  <g fill="#8ce8b6">
+    <rect x="53" y="44" width="22" height="6" rx="3"/>
+    <rect x="59" y="61" width="16" height="6" rx="3"/>
+    <rect x="53" y="78" width="22" height="6" rx="3"/>
+  </g>
+</svg>

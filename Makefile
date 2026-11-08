@@ -1,65 +1,43 @@
 SHELL := /bin/bash
-.PHONY: all verify lint package updates clean help
+.PHONY: all verify lint package release test icons screenshots updates clean help
 
-# Configuration
-DIST       := dist
-MANIFEST   := manifest.json
-REQUIRED   := manifest.json content-script.js styles.css README.md
-ICONS      := icons/icon-48.png icons/icon-96.png icons/icon-128.png
-
-NAME       := $(shell grep '"name"' $(MANIFEST) | sed 's/.*: *"//;s/".*//' | tr '[:upper:] ' '[:lower:]-')
-VERSION    := $(shell grep '"version"' $(MANIFEST) | head -1 | sed 's/.*: *"//;s/".*//')
-XPI        := $(DIST)/$(NAME)-$(VERSION).xpi
-SHA        := $(DIST)/$(NAME)-$(VERSION).sha256
-
-# Colors
-RED        := \033[0;31m
-YELLOW     := \033[0;33m
-GREEN      := \033[0;32m
-CYAN       := \033[0;36m
-BOLD       := \033[1m
-NC         := \033[0m
-
-# Targets
-all: verify package
+all: package
 
 help:
-	@echo -e "${BOLD}Usage: make [target]${NC}"
-	@echo ""
-	@echo "  make             Verify and package the extension"
-	@echo "  make verify      Run all verification checks"
-	@echo "  make lint        Lint manifest.json"
-	@echo "  make package     Create .xpi file (runs verify first)"
-	@echo "  make updates     Generate dist/updates.json"
-	@echo "  make clean       Remove dist/ directory"
-	@echo "  make help        Show this help"
-
-verify: lint
-	@echo ""
-	@bash scripts/verify.sh
-	@echo ""
-	@echo -e "${GREEN}[OK]${NC} All checks passed"
+	@echo "make package      Verify and build the unsigned AMO upload and listing kit"
+	@echo "make release      Package and run Mozilla web-ext lint (npm ci required)"
+	@echo "make verify       Check manifest, JavaScript syntax, files, and image sizes"
+	@echo "make test         Test private-channel migration feed validation"
+	@echo "make icons        Regenerate PNG icons from SVG (rsvg-convert required)"
+	@echo "make screenshots  Run Firefox smoke checks and capture listing images"
+	@echo "make clean        Remove generated dist/ artifacts"
 
 lint:
 	@bash scripts/lint-manifest.sh
 
+verify: lint
+	@node --check content-script.js
+	@bash scripts/verify.sh
+
 package: verify
-	@mkdir -p $(DIST)
-	@rm -f $(XPI) $(SHA)
-	@echo ""
-	@echo -e "${BOLD}[PACKAGE]${NC} Creating $(XPI)..."
-	@zip -qr $(XPI) $(REQUIRED) $(ICONS)
-	@sha256sum $(XPI) > $(SHA)
-	@SIZE=$$(stat -f%z "$(XPI)" 2>/dev/null || stat -c%s "$(XPI)" 2>/dev/null); \
-	HASH=$$(cut -d' ' -f1 $(SHA)); \
-	echo ""; \
-	echo -e "${GREEN}[OK]${NC} Created: $(XPI) ($$SIZE bytes)"; \
-	echo -e "${CYAN}[OK]${NC} SHA256: $$HASH"; \
-	echo -e "${CYAN}[OK]${NC} Hash file: $(SHA)"
+	@python3 scripts/package.py
+
+release: package test
+	@npm run lint
+
+test:
+	@python3 -m unittest discover -s tests -v
+
+icons:
+	@bash scripts/generate-icons.sh
+
+screenshots:
+	@npm run screenshots
 
 updates:
-	@bash scripts/gen-updates.sh
+	@echo "Use scripts/gen-updates.sh --signed-xpi FILE --url HTTPS_URL after AMO signing."
+	@echo "See PUBLISHING.md for migration of existing private installations."
+	@exit 1
 
 clean:
-	@rm -rf $(DIST)
-	@echo -e "${YELLOW}[OK]${NC} Removed $(DIST)/"
+	@rm -rf dist

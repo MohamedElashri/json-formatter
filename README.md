@@ -1,121 +1,106 @@
-# JSON Formatter - Firefox Extension
+# JSON Formatter for Firefox
 
-A beautiful, feature-rich JSON viewer browser extension for Firefox with syntax highlighting, collapsible tree view, and more. The goal of this extension is to a personal extension where I'm the main and probably the only user, so I built it with vanilla JavaScript for maximum compatibility and performance without any external dependencies. Feel free to use it and contribute if you find it useful!
+<img src="icons/icon-128.png" width="96" height="96" alt="JSON Formatter icon">
+
+Read JSON responses in a collapsible tree with syntax highlighting, property paths,
+and light and dark themes. Built with vanilla JavaScript and CSS, with no runtime
+dependencies or data collection.
+
+Version 1.0.2 is prepared for the first public Mozilla Add-ons (AMO) listing.
+The public listing URL will be added after Mozilla publishes it.
 
 ## Features
 
-- **Syntax Highlighting** - Color-coded keys, strings, numbers, booleans, and null values
-- **Collapsible Tree View** - Expand/collapse nested objects and arrays with level controls
-- **JSON Path Display** - Hover any property to see its full JSON path, click to pin, then copy
-- **Expand/Collapse All** - Inline button to expand/collapse all children of an object
-- **Three View Modes** - Tree (default), Formatted (pretty-printed), and Raw (minified)
-- **Copy to Clipboard** - One-click copy JSON to clipboard
-- **Console Access** - JSON payload available as `window.data` in the browser console
-- **Theme Support** - Light, dark, and auto (system) themes with seamless switching
-- **Indent Guide Lines** - Visual guides with hover highlighting for better readability
+- Syntax highlighting for keys, strings, numbers, booleans, and null in the tree.
+- Collapsible objects and arrays, depth controls, and expand-all controls.
+- Property paths on hover; click a row to pin a path, then copy it.
+- Tree, formatted (pretty-printed), and raw (minified) views.
+- Copy the full JSON document or a nested object with children.
+- Light, dark, and automatic system themes.
+- Indent guides and clickable HTTP/HTTPS values.
+- Console access as `window.data` and `window.jsonData`, where page policy permits.
 
-## Installation
+![JSON tree in the dark theme](listing/screenshots/01-dark-tree.png)
 
-### Temporary Installation (Development)
+## Installation and setup
 
-1. Open Firefox and navigate to `about:debugging`
-2. Click **"This Firefox"** in the left sidebar
-3. Click **"Load Temporary Add-on..."**
-4. Navigate to this project directory and select `manifest.json`
-5. The extension is now installed and active
+Install the signed extension from Mozilla Add-ons once the public listing is
+available. Packages ending in `-unsigned.xpi` are for uploading to AMO and cannot
+be permanently installed in normal Firefox.
 
-**Important:** If Firefox's built-in JSON viewer still appears instead of ours:
-1. Navigate to `about:config`
-2. Search for `devtools.jsonview.enabled`
-3. Toggle it to `false`
-4. Reload any JSON pages
+Firefox's built-in JSON viewer can take precedence over the extension. On
+Firefox desktop, open `about:config`, find `devtools.jsonview.enabled`, set it to
+`false`, and reload your JSON tab. This extension does not change Firefox
+preferences. Set it back to `true` to restore the built-in viewer.
 
-> **Note:** Firefox's native JSON viewer can intercept before extensions run. 
-> Disabling it is a one-time setting change that all Firefox JSON viewer extensions require.
+Firefox may ask you to allow access to websites. Grant access on the sites where
+you want JSON Formatter to run. For local JSON files, also allow access to file
+URLs if Firefox offers that option.
 
-### Permanent Installation
-4. Select the `manifest.json` file from this directory
-5. To make it permanent, we'll need to package and sign the extension:
-   - Visit [Firefox Add-on Developer Hub](https://addons.mozilla.org/developers/)
-   - Submit the extension for signing
+To try a development checkout:
+
+1. Open `about:debugging#/runtime/this-firefox`.
+2. Choose **Load Temporary Add-on** and select `manifest.json`.
+3. Complete the setup above and open a JSON response.
+
+Temporary installations are removed when Firefox restarts.
 
 ## Usage
 
-Once installed, the extension automatically activates when we visit:
-- Pages with `application/json` content type
-- URLs ending with `.json`
-- Pages containing valid JSON content
+The extension activates on valid JSON objects or arrays served with a JSON content
+type, or on a page consisting of a single `<pre>` containing JSON. Ordinary HTML,
+invalid JSON, and top-level primitive values are left unchanged. Inputs longer
+than 10,485,760 JavaScript string characters are skipped to limit resource use.
 
-### Toolbar Controls
+- **Tree / Formatted / Raw** switches the view.
+- **Level** buttons expand to a selected depth; **All** expands the tree.
+- Click the triangle beside an object or array to collapse it.
+- Hover a row to inspect its path. Click to pin it; **Escape** clears the pin.
+- Hover a nested object to reveal its copy and expand/collapse-children controls.
+- **Copy** copies the formatted document. Clipboard access depends on the page
+  context and Firefox's clipboard rules.
+- The theme button cycles **Auto → Dark → Light**. Your choice is stored per site
+  in local storage when available.
 
-**View Modes:**
-- **Tree** - Interactive tree view with collapsible nodes (default)
-- **Formatted** - Pretty-printed JSON with syntax highlighting
-- **Raw** - Minified JSON view
+In the page's console, `window.data` and `window.jsonData` expose the parsed
+document when inline scripts are permitted by the page's Content Security Policy.
 
-**Level Controls:**
-- Click **All** to expand all levels
-- Click **1-5** to expand to that specific nesting level
+## Compatibility and permissions
 
-**Action Buttons:**
-- **Copy** - Copy JSON to clipboard
-- **Theme** - Cycle through Light → Dark → Auto themes
+The manifest supports Firefox **140+ on desktop** and **142+ on Android** using
+Manifest V3. Desktop is the primary tested platform; Android still needs a device
+check before being advertised as tested.
 
-### Tree View Interactions
+Access to all websites lets the content script detect JSON responses at arbitrary
+URLs. It inspects eligible documents locally and leaves other pages unchanged.
+There is no background service, analytics, telemetry, or remote code. See
+[the privacy policy](PRIVACY.md) for theme storage and clipboard details.
 
-- **Expand/Collapse** - Click the ▶/▼ toggle next to objects/arrays
-- **View Path** - Hover over any key to see its full JSON path
-- **Pin Path** - Click on a key to pin the path display
-- **Copy Path** - Click the Copy icon that appears when hovering over keys
-- **Expand All Children** - Hover over an object/array and click the ⊞ button
+## Development and releases
 
-### Console Access
+The extension itself needs no build step. Python 3 and Node.js 22+ are used by the
+release tools.
 
-The parsed JSON is available in the browser console:
-```javascript
-window.data    // The parsed JSON object
-window.jsonData // Also available as window.jsonData
+```sh
+npm ci
+make release
 ```
 
-## Technical Details
+This verifies the manifest, stages an allowlist of runtime files, creates an
+unsigned XPI and listing kit in `dist/`, and runs Mozilla's web-ext validator.
+See [the publishing guide](PUBLISHING.md) for signing, public submission, the old
+private update channel, and the release checklist.
 
-- **Manifest Version**: 2 (compatible with Firefox)
-- **Minimum Firefox Version**: +60.01 but tested on latest versions only
-- **Permissions**: 
-  - `activeTab` - Access to the current tab's content
-  - `clipboardWrite` - Copy JSON to clipboard
-
-## Customization
-
-### Modifying Colors
-
-Edit the CSS variables in `styles.css`:
-
-```css
-.jf-light-theme {
-  --jf-key: #881391;
-  --jf-string: #c41a16;
-  --jf-number: #1c00cf;
-  --jf-boolean: #0d22aa;
-  --jf-null: #808080;
-  /* ... more variables ... */
-}
+```sh
+make icons                       # Regenerate PNGs; requires rsvg-convert
+npx playwright install firefox   # One-time screenshot browser setup
+npm run screenshots              # Firefox smoke checks and real UI captures
 ```
 
-### Adding Features
+Edit `content-script.js` for behavior, `styles.css` for themes, and
+`icons/icon.svg` for the icon. Generated PNGs and listing screenshots are committed
+so packaging does not need an image renderer or browser.
 
-The extension is built with vanilla JavaScript for maximum compatibility and performance. Key files:
-- `content-script.js` - All logic for JSON parsing, rendering, and interactions
-- `styles.css` - Complete styling with CSS custom properties for theming
-
-## Browser Compatibility
-
-This extension is built specifically for Firefox and uses Firefox available APIs. It is **probably not** compatible with Chrome or other browsers.
-
-## License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Feel free to submit issues or pull requests.
+Report issues and request features at
+[GitHub Issues](https://github.com/MohamedElashri/json-formatter/issues).
+Contributions are welcome. Licensed under [MIT](LICENSE).

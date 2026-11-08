@@ -1,4 +1,7 @@
 /.qwen
 dist
+node_modules/
+__pycache__/
 *.log
 *.tmp
+PUBLISHING.md

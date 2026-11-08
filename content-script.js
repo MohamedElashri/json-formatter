@@ -79,8 +79,8 @@
   }
 
   // ── Theme Management ────────────────────────────────────────────
-  // Use a simple in-memory default since we don't have storage permission in MV3
-  // Theme preference is stored in the extension's own storage, not page localStorage
+  // Remember the theme per site using page localStorage when available.
+  // Keep an in-memory override for pages where localStorage is blocked.
   let _themeOverride = null;
 
   function getTheme() {
@@ -274,7 +274,7 @@
     globalTotalKeys = 0;
     container.innerHTML = '';
 
-    const rootNode = renderValue(null, data, 'data', 0, true, false);
+    const rootNode = renderValue(null, data, 'data', 0, true, true);
     container.appendChild(rootNode);
 
     return { maxDepth: globalMaxDepth, totalKeys: globalTotalKeys };
@@ -312,6 +312,7 @@
     if (isExpandable) {
       const toggle = document.createElement('span');
       toggle.className = 'jf-toggle';
+      toggle.textContent = '▶';
       line.appendChild(toggle);
     } else {
       const spacer = document.createElement('span');
