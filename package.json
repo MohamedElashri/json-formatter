@@ -1,6 +1,6 @@
 {
   "name": "json-formatter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Development tools for the JSON Formatter Firefox extension",
   "license": "MIT",

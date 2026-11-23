@@ -29,7 +29,7 @@ assert set(manifest["icons"]) == {"16", "32", "48", "64", "96", "128"}
 for size, name in manifest["icons"].items():
     png_size(name, (int(size), int(size)))
 
-for file in ["content-script.js", "styles.css", "LICENSE", "PRIVACY.md", "README.md",
+for file in ["content-script.js", "styles.css", "about.html", "LICENSE", "PRIVACY.md", "README.md",
              "CHANGELOG.md", "listing/amo.md",
              "listing/reviewer-notes.txt", "listing/sample.json", "icons/icon.svg"]:
     assert (ROOT / file).is_file(), f"Missing release file: {file}"

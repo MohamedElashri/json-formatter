@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "JSON Formatter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A JSON viewer with syntax highlighting, collapsible tree view, path tracking, and theme support.",
   "homepage_url": "https://github.com/MohamedElashri/json-formatter",
   "author": "melashri",
@@ -30,7 +30,8 @@
       "96": "icons/icon-96.png",
       "128": "icons/icon-128.png"
     },
-    "default_title": "JSON Formatter"
+    "default_title": "JSON Formatter",
+    "default_popup": "about.html"
   },
   "permissions": [],
   "host_permissions": [

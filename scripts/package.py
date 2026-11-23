@@ -48,7 +48,7 @@ def main():
     args = parser.parse_args()
 
     if args.source_only:
-        files = ["manifest.json", "content-script.js", "styles.css", "LICENSE",
+        files = ["manifest.json", "content-script.js", "styles.css", "about.html", "LICENSE",
                  "PRIVACY.md", "README.md", "CHANGELOG.md",
                  "Makefile", "package.json", "package-lock.json"]
         if (ROOT / "PUBLISHING.md").is_file():
@@ -60,7 +60,7 @@ def main():
 
     manifest = json.loads((ROOT / "manifest.json").read_text())
     version = manifest["version"]
-    runtime = ["manifest.json", "content-script.js", "styles.css", "LICENSE", "PRIVACY.md"]
+    runtime = ["manifest.json", "content-script.js", "styles.css", "about.html", "LICENSE", "PRIVACY.md"]
     runtime += sorted(set(manifest["icons"].values()))
     dist = ROOT / args.dist_dir
     dist.mkdir(parents=True, exist_ok=True)
