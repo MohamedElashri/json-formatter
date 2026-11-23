@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3
+
+- Add a toolbar About popup with the project website and an optional Ko-fi tip button.
+- Add a matching Ko-fi badge to the README.
+
 ## 1.0.2
 
 - Prepare the first public Mozilla Add-ons listing, retaining the existing add-on ID.
